@@ -3,7 +3,9 @@ import { Dimensions } from "react-native";
 export const COLORS = {
     sunset: "#F65B4E",
     twilight: "#29319F",
-    morning: "#FFBA7C",
+    // morning: "#FFBA7C",
+    // morning: "#FDA758",
+    morning:"#FFA244",
     fog: "#FFDEEF",
     eclipse: "#573353",
 };
