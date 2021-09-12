@@ -5,9 +5,10 @@ export const COLORS = {
     twilight: "#29319F",
     // morning: "#FFBA7C",
     // morning: "#FDA758",
-    morning:"#FFA244",
+    morning: "#FFA244",
     fog: "#FFDEEF",
     eclipse: "#573353",
+    orange: "#FFF6ED",
 };
 
 const { height, width } = Dimensions.get("screen");
