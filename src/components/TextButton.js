@@ -2,18 +2,14 @@ import React from "react";
 import { Pressable } from "react-native";
 import Text from "./Text";
 
-const TextButton = ({ title, onPress, style }) => {
+const TextButton = ({ title, onPress, style, bold, textStyle }) => {
     return (
         <Pressable onPress={onPress} style={style}>
             {({ pressed }) => (
                 <Text
-                    style={
-                        pressed
-                            ? {
-                                  color: "gray",
-                              }
-                            : {}
-                    }
+                    bold={bold}
+                    color={pressed ? "gray" : undefined}
+                    style={textStyle}
                 >
                     {title}
                 </Text>
