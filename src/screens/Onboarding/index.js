@@ -1,101 +1,78 @@
-import React, { useState } from "react";
-import { View, StyleSheet, Image, Button } from "react-native";
-import Header from "../../components/Header";
-import Text from "../../components/Text";
-import TextButton from "../../components/TextButton";
-import theme, { COLORS } from "../../utils/theme";
-// const OnboardingImage1 = require("../../../assets/images/onboarding/Onboarding-1-removebg.png");
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/core";
+import React, { useRef, useState, useEffect } from "react";
+import {
+    View,
+    StyleSheet,
+    Animated,
+    SafeAreaView,
+    StatusBar,
+    Platform,
+} from "react-native";
+import ActionButton from "../../components/ActionButton";
+import theme from "../../utils/theme";
+import PageIndicator from "./PageIndicator";
+import SingleOnboardingScreen from "./SingleOnboardingScreen";
 
 const ONBOARDING_DATA = [
     {
         title: "WELCOME TO MONUMENTAL HABITS",
-        image: require("../../../assets/images/onboarding/Onboarding-1-removebg.png"),
+        image: require("../../../assets/images/onboarding/Onboarding-1.png"),
     },
     {
         title: "CREATE NEW HABIT EASILY",
-        image: require("../../../assets/images/onboarding/Onboarding-1-removebg.png"),
+        image: require("../../../assets/images/onboarding/Onboarding-2.png"),
     },
     {
         title: "KEEP TRACK OF YOUR PROGRESS",
-        image: require("../../../assets/images/onboarding/Onboarding-1-removebg.png"),
+        image: require("../../../assets/images/onboarding/Onboarding-3.png"),
     },
     {
-        title: "JOIN A SUPPORTIVE COMMUNITY",
-        image: require("../../../assets/images/onboarding/Onboarding-1-removebg.png"),
+        title: "JOIN TO A SUPPORTIVE COMMUNITY",
+        image: require("../../../assets/images/onboarding/Onboarding-4.png"),
     },
 ];
 
-const Dot = ({ isActive }) => (
-    <View style={isActive ? styles.activeDot : styles.dot} />
-);
-
-const PageIndicator = ({ nextPage, activeIndex }) => {
-    return (
-        <View
-            style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                width: theme.SCREEN_WIDTH * 0.8,
-                marginTop: theme.SPACING * 5,
-            }}
-        >
-            <TextButton title="Skip" />
-
-            <View
-                style={{
-                    flexDirection: "row",
-                    flex: 0.25,
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                }}
-            >
-                {ONBOARDING_DATA.map((_, index) => (
-                    <Dot
-                        key={`dot-${index}`}
-                        isActive={index === activeIndex}
-                    />
-                ))}
-            </View>
-
-            <TextButton title="Next" onPress={nextPage} />
-        </View>
-    );
-};
-
-const SingleOnboardingScreen = ({ data }) => {
-    const { title, image } = data;
-
-    return (
-        <View
-            style={{
-                alignItems: "center",
-                width: theme.SCREEN_WIDTH,
-            }}
-        >
-            <Header>{title}</Header>
-            <Image source={image} />
-            <Text
-                style={{
-                    width: theme.SCREEN_WIDTH * 0.9,
-                }}
-            >
-                WE CAN <Text color={COLORS.morning}>HELP YOU</Text> TO BE BETTER
-                VERSION OF <Text color={COLORS.morning}>YOURSELF.</Text>
-            </Text>
-        </View>
-    );
-};
-
 const Onboarding = () => {
     const [onboardingActiveIndex, setOnboardingActiveIndex] = useState(0);
+
+    const navigation = useNavigation();
+
+    const buttonOpacity = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+        if (onboardingActiveIndex !== ONBOARDING_DATA.length - 1) return;
+
+        Animated.timing(buttonOpacity, {
+            toValue: 1,
+            duration: 300,
+            delay: 800,
+            useNativeDriver: true,
+        }).start();
+    }, [onboardingActiveIndex]);
 
     const _nextPage = () => {
         setOnboardingActiveIndex((prev) => prev + 1);
     };
 
+    const _previousPage = () => {
+        setOnboardingActiveIndex((prev) => prev - 1);
+    };
+
+    const _skipOnboarding = () => {
+        setOnboardingActiveIndex(ONBOARDING_DATA.length - 1);
+    };
+
+    const _finishOnboarding = async () => {
+        navigation.navigate("Login");
+        await AsyncStorage.setItem("onboarding", JSON.stringify(false));
+    };
+
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
+            <StatusBar
+                barStyle={Platform.OS === "ios" ? "dark-content" : "default"}
+            />
             <View
                 style={[
                     styles.scrollContainer,
@@ -113,14 +90,35 @@ const Onboarding = () => {
                     <SingleOnboardingScreen
                         key={`onboarding-screen-${index}`}
                         data={onboardingData}
+                        index={index}
+                        activeIndex={onboardingActiveIndex}
                     />
                 ))}
             </View>
-            <PageIndicator
-                activeIndex={onboardingActiveIndex}
-                nextPage={_nextPage}
-            />
-        </View>
+            {onboardingActiveIndex === ONBOARDING_DATA.length - 1 ? (
+                <Animated.View
+                    style={{
+                        opacity: buttonOpacity,
+                    }}
+                >
+                    <ActionButton
+                        title="Get Started"
+                        style={{
+                            marginTop: theme.SPACING * 2,
+                        }}
+                        onPress={_finishOnboarding}
+                    />
+                </Animated.View>
+            ) : (
+                <PageIndicator
+                    activeIndex={onboardingActiveIndex}
+                    nextPage={_nextPage}
+                    previousPage={_previousPage}
+                    skipOnboarding={_skipOnboarding}
+                    pageCount={ONBOARDING_DATA.length}
+                />
+            )}
+        </SafeAreaView>
     );
 };
 
@@ -134,18 +132,7 @@ const styles = StyleSheet.create({
     scrollContainer: {
         flexDirection: "row",
         width: theme.SCREEN_WIDTH,
-    },
-    dot: {
-        width: 10,
-        height: 10,
-        borderRadius: 5,
-        backgroundColor: COLORS.morning,
-    },
-    activeDot: {
-        width: 12,
-        height: 12,
-        borderRadius: 6,
-        backgroundColor: COLORS.eclipse,
+        flex: 0.8,
     },
 });
 
