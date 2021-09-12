@@ -1,10 +1,10 @@
 import React from "react";
-import { View, StyleSheet, Pressable } from "react-native";
+import { Pressable } from "react-native";
 import Text from "./Text";
 
-const TextButton = ({ title, onPress }) => {
+const TextButton = ({ title, onPress, style }) => {
     return (
-        <Pressable onPress={onPress}>
+        <Pressable onPress={onPress} style={style}>
             {({ pressed }) => (
                 <Text
                     style={
@@ -21,13 +21,5 @@ const TextButton = ({ title, onPress }) => {
         </Pressable>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-});
 
 export default TextButton;
