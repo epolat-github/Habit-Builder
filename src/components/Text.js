@@ -11,8 +11,8 @@ const Text = (props) => {
                 styles.text,
                 {
                     color,
-                    ...style,
                 },
+                style,
             ]}
         >
             {children}
@@ -23,10 +23,10 @@ const Text = (props) => {
 const styles = StyleSheet.create({
     text: {
         color: COLORS.twilight,
-        fontSize: 18,
+        fontSize: 16,
         fontFamily: "Manrope-Bold",
         textAlign: "center",
-        lineHeight: 27,
+        lineHeight: 26,
     },
 });
 
