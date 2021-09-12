@@ -3,10 +3,12 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import NavContainer from "./src/routers";
 import { useFonts } from "expo-font";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const FONTS = {
     "Klasik-Regular": require("./assets/fonts/Klasik-Regular.otf"),
     "Manrope-Bold": require("./assets/fonts/Manrope-Bold.ttf"),
+    "Manrope-Medium": require("./assets/fonts/Manrope-Medium.ttf"),
 };
 
 export default function App() {
@@ -16,7 +18,11 @@ export default function App() {
 
     if (fontLoadError) console.warn(fontLoadError);
 
-    return <NavContainer />;
+    return (
+        <SafeAreaProvider>
+            <NavContainer />
+        </SafeAreaProvider>
+    );
 }
 
 const styles = StyleSheet.create({
