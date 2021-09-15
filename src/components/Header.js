@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text } from "react-native";
 import { COLORS } from "../utils/theme";
 
-const Header = ({ children, color = COLORS.eclipse, style }) => {
+const Header = ({ children, color = COLORS.eclipse, style, ...props }) => {
     return (
         <Text
             style={[
@@ -12,6 +12,7 @@ const Header = ({ children, color = COLORS.eclipse, style }) => {
                     ...style,
                 },
             ]}
+            {...props}
         >
             {children}
         </Text>

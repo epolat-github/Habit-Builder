@@ -75,6 +75,7 @@ const SingleOnboardingScreen = ({ data, activeIndex, index }) => {
                 <Text
                     style={{
                         width: theme.SCREEN_WIDTH * 0.8,
+                        textAlign: "center"
                     }}
                 >
                     WE CAN <Text color={COLORS.morning}>HELP YOU</Text> TO BE

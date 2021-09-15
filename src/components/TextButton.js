@@ -9,7 +9,12 @@ const TextButton = ({ title, onPress, style, bold, textStyle }) => {
                 <Text
                     bold={bold}
                     color={pressed ? "gray" : undefined}
-                    style={textStyle}
+                    style={[
+                        {
+                            textAlign: "center",
+                        },
+                        textStyle,
+                    ]}
                 >
                     {title}
                 </Text>
