@@ -9,6 +9,7 @@ export const COLORS = {
     fog: "#FFDEEF",
     eclipse: "#573353",
     orange: "#FFF6ED",
+    lightBackground: "#FFF3E9",
 };
 
 const { height, width } = Dimensions.get("screen");
