@@ -38,5 +38,6 @@ export default {
             appId: process.env.APP_ID,
             measurementId: process.env.MEASUREMENT_ID,
         },
+        googleClientId: process.env.GOOGLE_CLIENT_ID,
     },
 };
