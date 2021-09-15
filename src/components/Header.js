@@ -1,10 +1,8 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { COLORS } from "../utils/theme";
 
-const Header = (props) => {
-    const { children, color = COLORS.eclipse, style } = props;
-
+const Header = ({ children, color = COLORS.eclipse, style }) => {
     return (
         <Text
             style={[

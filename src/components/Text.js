@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
     text: {
         color: COLORS.twilight,
         fontSize: 16,
-        textAlign: "center",
         lineHeight: 26,
     },
 });
