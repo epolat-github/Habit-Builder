@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as Animatable from "react-native-animatable";
-import ActionButton from "../../../components/ActionButton";
+import GoogleSigninButton from "../../../components/GoogleSigninButton";
 import theme from "../../../utils/theme";
-import AntDesign from "@expo/vector-icons/AntDesign";
+import useGoogleLogin from "../../../hooks/useGoogleLogin";
 
 const SocialLoginSection = () => {
+    const { login, error } = useGoogleLogin();
+
+    useEffect(() => {
+        if (error) return alert("Error");
+    }, [error]);
+
     return (
         <Animatable.View
             animation="fadeInUp"
@@ -14,13 +20,7 @@ const SocialLoginSection = () => {
                 marginBottom: theme.SPACING * 2.5,
             }}
         >
-            <ActionButton
-                title="Continue with Google"
-                buttonColor="#fff"
-                bold
-                textStyle={{ fontSize: 14 }}
-                icon={() => <AntDesign name="google" size={24} color="black" />}
-            />
+            <GoogleSigninButton onPress={login} />
         </Animatable.View>
     );
 };

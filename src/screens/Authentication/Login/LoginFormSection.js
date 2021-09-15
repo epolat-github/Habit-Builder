@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Animatable from "react-native-animatable";
 import theme, { COLORS } from "../../../utils/theme";
@@ -6,9 +6,32 @@ import { StyleSheet, TextInput, View } from "react-native";
 import Text from "../../../components/Text";
 import ActionButton from "../../../components/ActionButton";
 import TextButton from "../../../components/TextButton";
+import { useNavigation } from "@react-navigation/core";
+import firebase from "firebase";
 
 const LoginFormSection = () => {
     const { bottom } = useSafeAreaInsets();
+    const navigation = useNavigation();
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const _navigateToSignup = () => navigation.navigate("Signup");
+
+    const _login = async () => {
+        if (!email || !password) return;
+
+        try {
+            const user = await firebase
+                .auth()
+                .signInWithEmailAndPassword(email, password);
+
+            console.log("Login success: ", user);
+        } catch (err) {
+            console.log("Login error code: ", err.code);
+            console.log("Login error message: ", err.message);
+        }
+    };
 
     return (
         <Animatable.View
@@ -34,15 +57,23 @@ const LoginFormSection = () => {
                     autoCompleteType="email"
                     autoCapitalize="none"
                     textContentType="emailAddress"
+                    value={email}
+                    onChangeText={setEmail}
                 />
                 <TextInput
                     style={[styles.textInput, { marginTop: theme.SPACING }]}
                     placeholder="Password"
                     placeholderTextColor={COLORS.eclipse}
                     secureTextEntry
+                    value={password}
+                    onChangeText={setPassword}
                 />
             </View>
-            <ActionButton title="Login" style={styles.loginButton} />
+            <ActionButton
+                title="Login"
+                style={styles.loginButton}
+                onPress={_login}
+            />
             <TextButton
                 title="Forgot password?"
                 style={{
@@ -70,6 +101,7 @@ const LoginFormSection = () => {
                     textStyle={{
                         fontSize: 14,
                     }}
+                    onPress={_navigateToSignup}
                 />
             </View>
         </Animatable.View>
