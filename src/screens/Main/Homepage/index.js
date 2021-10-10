@@ -3,6 +3,7 @@ import { StyleSheet, ImageBackground } from "react-native";
 import theme, { COLORS } from "../../../utils/theme";
 import { StatusBar } from "expo-status-bar";
 import QuoteSection from "./QuoteSection";
+import HabitsSection from "./HabitsSection";
 
 const Homepage = () => {
     return (
@@ -19,7 +20,9 @@ const Homepage = () => {
 
             {/* QUOTE SECTION */}
             <QuoteSection />
+
             {/* HABITS SECTION */}
+            <HabitsSection />
 
             {/* TABBAR SECTION */}
         </ImageBackground>

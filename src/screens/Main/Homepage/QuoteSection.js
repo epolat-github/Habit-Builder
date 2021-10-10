@@ -50,7 +50,7 @@ const QuoteSection = () => {
 const styles = StyleSheet.create({
     container: {
         width: QUOTE_SECTION_WIDTH,
-        marginTop: theme.SPACING * 2,
+        marginTop: theme.SPACING * 2.5,
         height: 150,
         backgroundColor: "#fff",
         borderRadius: 12,
